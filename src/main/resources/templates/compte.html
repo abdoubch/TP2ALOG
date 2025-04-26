@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Consultation d'un compte</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #003366;
+        }
+        .info-block {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        table {
+            border-collapse: collapse;
+            width: 70%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        button {
+            background-color: #003366;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type=text] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<h1>Consultation d'un compte</h1>
+
+<form th:action="@{/GestionComptes}" method="post">
+    <input type="text" name="code" placeholder="Numéro du compte" />
+    <button type="submit">Consulter</button>
+</form>
+
+<br />
+<br />
+
+<div class="info-block">
+    <strong>Code du compte:</strong> <span th:text="${numero}">N/A</span><br />
+    <strong>Date de création du compte:</strong> <span th:text="${date}">N/A</span><br />
+    <strong>Solde du compte:</strong> <span th:text="${solde}">N/A</span><br />
+</div>
+
+<h5>Les opérations effectuées sur ce compte:</h5>
+<table border="1" width="70%">
+    <tr>
+        <th>Numéro de l'opération</th>
+        <th>Date de l'opération</th>
+        <th>Montant de l'opération</th>
+        <th>Type de l'opération</th>
+    </tr>
+    <tr th:each="c : ${operations}">
+        <td th:text="${c.numero}"></td>
+        <td th:text="${c.date}"></td>
+        <td th:text="${c.montant}"></td>
+        <td th:if="${c.getClass().getName().contains('Versement')}">Versement</td>
+        <td th:unless="${c.getClass().getName().contains('Versement')}">Retrait</td>
+    </tr>
+</table>
+</body>
+</html>
